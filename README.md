@@ -33,3 +33,24 @@ The dataset includes 578 deeplink catalog entries, but their URIs are masked pla
 - `reference/`: supplied response schema and sample output.
 
 The server binds only to `127.0.0.1` on this computer. Search queries stay local; no OpenAI API is called.
+
+## Always-on public hosting (Render)
+
+The repository includes `render.yaml` for Render. It uses the paid Starter web-service plan so the service does not use the free-tier inactivity spin-down. Render pricing and plans can change; check the current service price before creating it. No hosting provider can promise a service will exist forever, but a paid always-on service stays public while its account, billing, and deployment remain active.
+
+1. Put the contents of this project folder in a GitHub repository. Use a private source repository if the dataset is not approved for public redistribution; the deployed app itself is public.
+2. Sign in to Render, connect GitHub, and create a Blueprint from that repository. Render reads `render.yaml`, builds the service, and provides an `onrender.com` URL.
+3. Keep the Render account and billing active. Add a custom domain only if desired.
+
+The server reads Render's `PORT` and binds to `0.0.0.0` when deployed. The local Windows launch behavior remains on `127.0.0.1:8000`.
+
+## Vercel deployment
+
+The project includes `app.py`, a FastAPI adapter that exposes the existing Python troubleshooting engine through Vercel's Python runtime. It uses the same `search()` implementation as the local app; it is not the simplified browser-only Netlify version. Vercel's Python runtime is currently in Beta and runs the app through serverless functions rather than as a permanently running server.
+
+1. Create a GitHub repository and upload the contents of this project folder.
+2. Sign in to Vercel, choose **Add New → Project**, and import that GitHub repository.
+3. Keep the project root at this folder. Vercel should detect FastAPI from `requirements.txt`; leave the build command empty.
+4. Select **Deploy**. The site is served from `public/`, and the `/api/...` endpoints use the Python app.
+
+No OpenAI key is needed for the current dataset search. This project does not yet use an AI model to generate ChatGPT-style answers. Add that separately only after the model provider and key are configured securely in Vercel. Vercel Functions have plan-dependent usage and duration limits, so hosting is not guaranteed forever. The supplied deeplinks remain masked placeholders and cannot open real Samsung settings screens.

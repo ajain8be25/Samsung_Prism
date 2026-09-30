@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: phone-troubleshooter
+    runtime: python
+    plan: starter
+    region: singapore
+    buildCommand: echo No packages to install
+    startCommand: python server.py
